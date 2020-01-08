@@ -41,13 +41,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setColor(getResources().getColor(R.color.blue))
                 .init();*/
 
- /*       //当前案例含ActionBar
+        //当前案例含ActionBar
         StatusBarUtils.with(this)
 //                .setIsFullScreen(true)
 //                .setIsActionBar(true)
                 .clearActionBarShadow()
                 .setDrawable(getResources().getDrawable(R.drawable.shape))
-                .init();*/
+                .init();
 
         /*StatusBarUtils.with(this)
                 .setIsHideStatus(true)

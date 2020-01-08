@@ -144,9 +144,11 @@ public class StatusBarUtils {
      */
     public StatusBarUtils clearActionBarShadow() {
         if (Build.VERSION.SDK_INT >= 21) {
-            ActionBar supportActionBar = ((AppCompatActivity) mActivity).getSupportActionBar();
-            if (supportActionBar != null) {
-                supportActionBar.setElevation(0);
+            if(mActivity instanceof AppCompatActivity){
+                ActionBar supportActionBar = ((AppCompatActivity) mActivity).getSupportActionBar();
+                if (supportActionBar != null) {
+                    supportActionBar.setElevation(0);
+                }
             }
         }
         return this;

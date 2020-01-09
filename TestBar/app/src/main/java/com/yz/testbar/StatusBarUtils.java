@@ -37,6 +37,8 @@ public class StatusBarUtils {
     private boolean isFullScreen = false;
     //是否隐藏状态栏
     private boolean isHideStatus = false;
+    //是否状态条字体为白色
+    private boolean isStatusFontWhite = false;
 
     public StatusBarUtils(Activity activity) {
         mActivity = activity;
@@ -75,6 +77,21 @@ public class StatusBarUtils {
     public StatusBarUtils setIsActionBar(boolean actionBar) {
         mIsActionBar = actionBar;
         return this;
+    }
+
+    /***
+     * 设置是否状态条字体为白色
+     * ***/
+    public StatusBarUtils setIsStatusFontWhite(boolean isWhite){
+        isStatusFontWhite = isWhite;
+        return this;
+    }
+
+    /***
+     * 是否状态条字体为白色
+     * ***/
+    public boolean isStatusFontWhite(){
+        return isStatusFontWhite;
     }
 
     /***
@@ -117,6 +134,11 @@ public class StatusBarUtils {
             setHideStatus();
             return;
         }
+
+        if(isStatusFontWhite()){
+            setStatusBarFontColor();
+        }
+
         fullScreen(mActivity);
         if (mColor != -1) {
             //设置了状态栏颜色
@@ -137,6 +159,7 @@ public class StatusBarUtils {
                 rootView.setPadding(0, getStatusBarHeight(mActivity) + getActionBarHeight(mActivity), 0, 0);
             }
         }
+
     }
 
     /**
@@ -392,5 +415,13 @@ public class StatusBarUtils {
         window.setAttributes(lp);
         window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
+    }
+
+    /***
+     * 设置状态栏字体颜色 （白色/黑色）
+     * ***/
+    private void setStatusBarFontColor(){
+        Window window = mActivity.getWindow();
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
     }
 }

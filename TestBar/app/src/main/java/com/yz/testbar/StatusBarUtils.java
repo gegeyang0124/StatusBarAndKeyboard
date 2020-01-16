@@ -5,9 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-//import android.support.v4.widget.DrawerLayout;
-//import android.support.v7.app.ActionBar;
-//import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -19,6 +16,10 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+//import android.support.v4.widget.DrawerLayout;
+//import android.support.v7.app.ActionBar;
+//import android.support.v7.app.AppCompatActivity;
 
 
 public class StatusBarUtils {
@@ -39,6 +40,10 @@ public class StatusBarUtils {
     private boolean isHideStatus = false;
     //是否状态条字体为白色
     private boolean isStatusFontWhite = false;
+    //是否移除状态底部占位状态栏view
+    private boolean mIsRemoveStatus = false;
+    //占位状态栏
+    private View statusBarView;
 
     public StatusBarUtils(Activity activity) {
         mActivity = activity;
@@ -76,6 +81,17 @@ public class StatusBarUtils {
 
     public StatusBarUtils setIsActionBar(boolean actionBar) {
         mIsActionBar = actionBar;
+        return this;
+    }
+
+    //是否移除状态底部占位状态栏view
+    public boolean isRemoveStatus(){
+        return mIsRemoveStatus;
+    }
+
+    //设置是否移除状态底部占位状态栏view
+    public StatusBarUtils setIsRemoveStatus(boolean isRemoveStatus){
+        mIsRemoveStatus = isRemoveStatus;
         return this;
     }
 
@@ -160,6 +176,10 @@ public class StatusBarUtils {
             }
         }
 
+        if(isRemoveStatus()){
+            removeStatus();
+        }
+
     }
 
     /**
@@ -242,7 +262,7 @@ public class StatusBarUtils {
                 View parentView = rootView.getChildAt(0);
                 LinearLayout linearLayout = new LinearLayout(activity);
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
-                View statusBarView = new View(activity);
+                statusBarView = new View(activity);
                 ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         getStatusBarHeight(activity));
                 statusBarView.setBackgroundColor(color);
@@ -268,7 +288,7 @@ public class StatusBarUtils {
                 } else {
                     //增加占位状态栏
                     ViewGroup decorView = (ViewGroup) mActivity.getWindow().getDecorView();
-                    View statusBarView = new View(activity);
+                    statusBarView = new View(activity);
                     ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             getStatusBarHeight(activity));
                     statusBarView.setBackgroundColor(color);
@@ -286,7 +306,7 @@ public class StatusBarUtils {
     private void addStatusViewWithDrawble(Activity activity, Drawable drawable) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //占位状态栏
-            View statusBarView = new View(activity);
+            statusBarView = new View(activity);
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     getStatusBarHeight(activity));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -423,5 +443,18 @@ public class StatusBarUtils {
     private void setStatusBarFontColor(){
         Window window = mActivity.getWindow();
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+    }
+
+    /***
+     * 移除状态底View
+     * ***/
+    private void removeStatus(){
+        if(mIsRemoveStatus){
+            if(statusBarView != null)
+            {
+                ViewGroup decorView = (ViewGroup) mActivity.getWindow().getDecorView();
+                decorView.removeView(statusBarView);
+            }
+        }
     }
 }
